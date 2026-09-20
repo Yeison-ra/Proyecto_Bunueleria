@@ -1,0 +1,85 @@
+{
+  "info": {
+    "name": "Proyecto Bunueleria - API REST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:9191" }
+  ],
+  "item": [
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": { "method": "GET", "url": "{{baseUrl}}/productos/listar" }
+        },
+        {
+          "name": "Consultar producto 1",
+          "request": { "method": "GET", "url": "{{baseUrl}}/productos/consultar/1" }
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Empanada\",\n  \"descripcion\": \"Empanada de carne\",\n  \"idCategoria\": 1,\n  \"estado\": \"ACTIVO\",\n  \"costo\": 1500,\n  \"precioVenta\": 3000,\n  \"stockMinimo\": 10\n}"
+            },
+            "url": "{{baseUrl}}/productos/nuevo"
+          }
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idProducto\": 1,\n  \"nombre\": \"Buñuelo grande\",\n  \"descripcion\": \"Buñuelo tradicional tamaño grande\",\n  \"idCategoria\": 1,\n  \"estado\": \"ACTIVO\",\n  \"costo\": 1400,\n  \"precioVenta\": 2800,\n  \"stockMinimo\": 12\n}"
+            },
+            "url": "{{baseUrl}}/productos/actualizar"
+          }
+        },
+        {
+          "name": "Desactivar producto",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/productos/desactivar/1" }
+        }
+      ]
+    },
+    {
+      "name": "Inventario",
+      "item": [
+        {
+          "name": "Consultar inventario producto 1",
+          "request": { "method": "GET", "url": "{{baseUrl}}/inventario/producto/1" }
+        },
+        {
+          "name": "Registrar entrada",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idProducto\": 1,\n  \"tipoMovimiento\": \"ENTRADA\",\n  \"motivo\": \"Compra a proveedor\",\n  \"cantidad\": 50,\n  \"referencia\": \"COMPRA-001\"\n}"
+            },
+            "url": "{{baseUrl}}/inventario/movimiento"
+          }
+        },
+        {
+          "name": "Registrar salida",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idProducto\": 1,\n  \"tipoMovimiento\": \"SALIDA\",\n  \"motivo\": \"Ajuste de inventario\",\n  \"cantidad\": 5,\n  \"referencia\": \"AJUSTE-001\"\n}"
+            },
+            "url": "{{baseUrl}}/inventario/movimiento"
+          }
+        }
+      ]
+    }
+  ]
+}
