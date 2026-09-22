@@ -5,17 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Producto {
+public class Inventario {
+    private Integer idInventario;
     private Integer idProducto;
-    private String nombre;
-    private String descripcion;
-    private Integer idCategoria;
-    private String estado;
-    private Float costo;
-    private Float precioVenta;
-    private Integer stockMinimo;
+    private LocalDateTime fechaActualizacion;
+    private Integer cantidadActual;
 }
