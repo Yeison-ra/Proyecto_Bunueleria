@@ -17,13 +17,13 @@ Flujo: `Controller -> Service -> Repository -> DAOHelper -> JDBC -> MySQL`.
 1. Abrir MySQL Workbench o el cliente MySQL.
 2. Ejecutar `database/bunueleria.sql`.
 3. Revisar `utilities/Conexion.java`.
-4. Cambiar `USUARIO` y `CLAVE` según el MySQL de cada equipo.
+4. Si MySQL usa credenciales diferentes, configurar las variables de entorno `BUNUELERIA_DB_USER` y `BUNUELERIA_DB_PASSWORD`.
 
 Por defecto el proyecto usa:
 
 - Base de datos: `bunueleria`
 - Usuario: `root`
-- Clave: `admin`
+- Clave por defecto: `admin` (puede cambiarse con la variable de entorno `BUNUELERIA_DB_PASSWORD`)
 
 ## Ejecutar
 
@@ -39,21 +39,21 @@ En macOS/Linux:
 ./gradlew bootRun
 ```
 
-La aplicación queda normalmente en `http://localhost:8080`.
+La aplicación se ejecuta en `http://localhost:9191`.
 
 ## API REST de Producto
 
 ### Listar
 
-`GET http://localhost:8080/productos/listar`
+`GET http://localhost:9191/productos/listar`
 
 ### Consultar por id
 
-`GET http://localhost:8080/productos/consultar/1`
+`GET http://localhost:9191/productos/consultar/1`
 
 ### Crear
 
-`POST http://localhost:8080/productos/nuevo`
+`POST http://localhost:9191/productos/nuevo`
 
 ```json
 {
@@ -69,7 +69,7 @@ La aplicación queda normalmente en `http://localhost:8080`.
 
 ### Actualizar
 
-`PUT http://localhost:8080/productos/actualizar`
+`PUT http://localhost:9191/productos/actualizar`
 
 ```json
 {
@@ -86,7 +86,7 @@ La aplicación queda normalmente en `http://localhost:8080`.
 
 ### Desactivar
 
-`PATCH http://localhost:8080/productos/desactivar/1`
+`PATCH http://localhost:9191/productos/desactivar/1`
 
 Se usa desactivación lógica porque el modelo del proyecto ya contempla el campo `estado` y permite conservar el historial del producto.
 
@@ -106,11 +106,11 @@ Para mejorar la valoración de la entrega se incluyó una interacción de negoci
 
 ### Consultar inventario de un producto
 
-`GET http://localhost:8080/inventario/producto/1`
+`GET http://localhost:9191/inventario/producto/1`
 
 ### Registrar una entrada
 
-`POST http://localhost:8080/inventario/movimiento`
+`POST http://localhost:9191/inventario/movimiento`
 
 ```json
 {
