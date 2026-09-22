@@ -11,20 +11,24 @@ public class Conexion {
     private Connection con;
 
     /*
-     * IMPORTANTE:
-     * Cambiar USUARIO y CLAVE según la configuración local de MySQL.
-     * Se conserva una conexión JDBC directa, igual al enfoque visto en clase.
+     * Conexión JDBC directa, siguiendo el enfoque visto en clase.
+     * Las credenciales pueden configurarse mediante variables de entorno.
+     * Si no se definen, se usan valores locales de desarrollo.
      */
-    private static final String URL = "jdbc:mysql://localhost:3306/bunueleria";
-    private static final String USUARIO = "root";
-    private static final String CLAVE = "1096*Soyfeliz2026+";
+    private static final String URL = obtenerVariable("BUNUELERIA_DB_URL", "jdbc:mysql://localhost:3306/bunueleria");
+    private static final String USUARIO = obtenerVariable("BUNUELERIA_DB_USER", "root");
+    private static final String CLAVE = obtenerVariable("BUNUELERIA_DB_PASSWORD", "admin");
+
+    private static String obtenerVariable(String nombre, String valorPorDefecto) {
+        String valor = System.getenv(nombre);
+        return (valor == null || valor.isBlank()) ? valorPorDefecto : valor;
+    }
 
     public Connection obtenerConexion() {
         try {
             con = DriverManager.getConnection(URL, USUARIO, CLAVE);
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, "No fue posible conectar con MySQL", ex);
         }
         return con;
     }
