@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: proyectoBunueleria
+  profiles:
+    active: dev
