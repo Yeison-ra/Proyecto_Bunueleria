@@ -1,8 +1,9 @@
 package edu.itm.ProyectoBunueleria.controllers;
 
 import edu.itm.ProyectoBunueleria.identities.Producto;
-import edu.itm.ProyectoBunueleria.services.ProductosService;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.itm.ProyectoBunueleria.services.ProductosServiceInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -12,22 +13,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/productos")
-public class ProductosController {
+public class ProductosController implements ProductosApi{
 
-    @Autowired
-    private ProductosService service;
+    private static final Logger logger = LoggerFactory.getLogger(ProductosController.class);
+    private final ProductosServiceInterface service;
 
-    @GetMapping("/listar")
+    public ProductosController(ProductosServiceInterface service) {
+        this.service = service;
+    }
+
     public ResponseEntity<List<Producto>> getProductos() {
         try {
             return new ResponseEntity<>(service.getProductos(), HttpStatus.OK);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("Error al listar los productos", exception);
             return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/consultar/{id}")
     public ResponseEntity<Producto> getProducto(@PathVariable Integer id) {
         if (id == null || id <= 0) {
             return new ResponseEntity<>(new Producto(), HttpStatus.BAD_REQUEST);
@@ -40,12 +43,11 @@ public class ProductosController {
             }
             return new ResponseEntity<>(new Producto(), HttpStatus.NO_CONTENT);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("Error al consultar el producto {}", id, exception);
             return new ResponseEntity<>(new Producto(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/nuevo")
     public ResponseEntity<Producto> insertarProducto(@RequestBody Producto producto) {
         if (!productoValido(producto)) {
             return new ResponseEntity<>(producto, HttpStatus.BAD_REQUEST);
@@ -62,12 +64,11 @@ public class ProductosController {
             }
             return new ResponseEntity<>(producto, HttpStatus.NOT_ACCEPTABLE);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("Error al insertar el producto {}", producto.getNombre(), exception);
             return new ResponseEntity<>(producto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/actualizar")
     public ResponseEntity<Producto> actualizarProducto(@RequestBody Producto producto) {
         if (!productoValido(producto) || ObjectUtils.isEmpty(producto.getIdProducto())) {
             return new ResponseEntity<>(producto, HttpStatus.BAD_REQUEST);
@@ -80,12 +81,11 @@ public class ProductosController {
             }
             return new ResponseEntity<>(producto, HttpStatus.NOT_ACCEPTABLE);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("Error al actualizar el producto {}", producto.getIdProducto(), exception);
             return new ResponseEntity<>(producto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PatchMapping("/desactivar/{id}")
     public ResponseEntity<Producto> desactivarProducto(@PathVariable Integer id) {
         if (id == null || id <= 0) {
             return new ResponseEntity<>(new Producto(), HttpStatus.BAD_REQUEST);
@@ -98,7 +98,7 @@ public class ProductosController {
             }
             return new ResponseEntity<>(new Producto(), HttpStatus.NO_CONTENT);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("Error al desactivar el producto {}", id, exception);
             return new ResponseEntity<>(new Producto(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

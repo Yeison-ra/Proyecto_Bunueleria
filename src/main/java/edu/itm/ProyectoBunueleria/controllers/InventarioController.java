@@ -2,8 +2,9 @@ package edu.itm.ProyectoBunueleria.controllers;
 
 import edu.itm.ProyectoBunueleria.identities.Inventario;
 import edu.itm.ProyectoBunueleria.identities.MovimientoInventario;
-import edu.itm.ProyectoBunueleria.services.InventarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.itm.ProyectoBunueleria.services.InventarioServiceInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -11,25 +12,32 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/inventario")
-public class InventarioController {
+public class InventarioController implements InventarioApi{
 
-    @Autowired
-    private InventarioService service;
+    private static final Logger logger = LoggerFactory.getLogger(InventarioController.class);
+    private final InventarioServiceInterface service;
 
-    @GetMapping("/producto/{idProducto}")
+    public InventarioController(InventarioServiceInterface service) {
+        this.service = service;
+    }
+
     public ResponseEntity<Inventario> consultarInventario(@PathVariable Integer idProducto) {
         if (idProducto == null || idProducto <= 0) {
             return new ResponseEntity<>(new Inventario(), HttpStatus.BAD_REQUEST);
         }
 
-        Inventario inventario = service.consultarInventario(idProducto);
-        if (inventario != null) {
-            return new ResponseEntity<>(inventario, HttpStatus.OK);
+        try {
+            Inventario inventario = service.consultarInventario(idProducto);
+            if (inventario != null) {
+                return new ResponseEntity<>(inventario, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new Inventario(), HttpStatus.NO_CONTENT);
+        } catch (Exception exception) {
+            logger.error("Error al consultar el inventario del producto {}", idProducto, exception);
+            return new ResponseEntity<>(new Inventario(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(new Inventario(), HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/movimiento")
     public ResponseEntity<MovimientoInventario> registrarMovimiento(@RequestBody MovimientoInventario movimiento) {
         if (ObjectUtils.isEmpty(movimiento)
                 || movimiento.getIdProducto() == null
@@ -43,14 +51,21 @@ public class InventarioController {
         if (!"ENTRADA".equals(tipo) && !"SALIDA".equals(tipo)) {
             return new ResponseEntity<>(movimiento, HttpStatus.BAD_REQUEST);
         }
+        movimiento.setTipoMovimiento(tipo);
 
-        MovimientoInventario result = service.registrarMovimiento(movimiento);
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        try {
+            MovimientoInventario result = service.registrarMovimiento(movimiento);
+            if (result != null) {
+                return new ResponseEntity<>(result, HttpStatus.CREATED);
+            }
+
+            // Puede ocurrir si el producto no existe o se intenta una SALIDA
+            // superior al inventario disponible.
+            return new ResponseEntity<>(movimiento, HttpStatus.CONFLICT);
+        } catch (Exception exception) {
+            logger.error("Error al registrar movimiento de inventario para el producto {}",
+                    movimiento.getIdProducto(), exception);
+            return new ResponseEntity<>(movimiento, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        // Puede ocurrir si el producto no existe, hay un error de BD o se intenta
-        // una SALIDA superior al inventario disponible.
-        return new ResponseEntity<>(movimiento, HttpStatus.CONFLICT);
     }
 }
