@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Repository
-public class InventarioRepository {
+public class InventarioRepository implements InventarioRepositoryInterface {
 
     @Autowired
     private InventarioDAOHelper helper;

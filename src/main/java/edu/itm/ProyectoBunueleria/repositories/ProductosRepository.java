@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProductosRepository {
+public class ProductosRepository implements ProductosRepositoryInterface{
 
     @Autowired
     private ProductosDAOHelper helper;
