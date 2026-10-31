@@ -1,6 +1,6 @@
 package edu.itm.ProyectoBunueleria.services;
 
-import edu.itm.ProyectoBunueleria.identities.Producto;
+import edu.itm.ProyectoBunueleria.jpaEntities.Producto;
 
 import java.util.List;
 
@@ -10,5 +10,4 @@ public interface ProductosServiceInterface {
     Producto actualizarProducto(Producto producto);
     Producto getProducto(Integer id);
     Producto desactivarProducto(Integer id);
-
 }

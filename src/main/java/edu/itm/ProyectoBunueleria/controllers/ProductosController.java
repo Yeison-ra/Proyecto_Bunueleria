@@ -1,6 +1,6 @@
 package edu.itm.ProyectoBunueleria.controllers;
 
-import edu.itm.ProyectoBunueleria.identities.Producto;
+import edu.itm.ProyectoBunueleria.jpaEntities.Producto;
 import edu.itm.ProyectoBunueleria.services.ProductosServiceInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

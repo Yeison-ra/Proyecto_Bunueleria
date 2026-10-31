@@ -1,7 +1,7 @@
 package edu.itm.ProyectoBunueleria.controllers;
 
-import edu.itm.ProyectoBunueleria.identities.Inventario;
-import edu.itm.ProyectoBunueleria.identities.MovimientoInventario;
+import edu.itm.ProyectoBunueleria.jpaEntities.Inventario;
+import edu.itm.ProyectoBunueleria.jpaEntities.MovimientoInventario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,6 +1,6 @@
 package edu.itm.ProyectoBunueleria.controllers;
 
-import edu.itm.ProyectoBunueleria.identities.Producto;
+import edu.itm.ProyectoBunueleria.jpaEntities.Producto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

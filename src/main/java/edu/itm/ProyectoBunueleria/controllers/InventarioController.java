@@ -1,7 +1,7 @@
 package edu.itm.ProyectoBunueleria.controllers;
 
-import edu.itm.ProyectoBunueleria.identities.Inventario;
-import edu.itm.ProyectoBunueleria.identities.MovimientoInventario;
+import edu.itm.ProyectoBunueleria.jpaEntities.Inventario;
+import edu.itm.ProyectoBunueleria.jpaEntities.MovimientoInventario;
 import edu.itm.ProyectoBunueleria.services.InventarioServiceInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

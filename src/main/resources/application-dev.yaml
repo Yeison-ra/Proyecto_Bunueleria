@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${BUNUELERIA_DB_URL:jdbc:mysql://localhost:3306/bunueleria}
+    username: ${BUNUELERIA_DB_USER:root}
+    password: ${BUNUELERIA_DB_PASSWORD:admin}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

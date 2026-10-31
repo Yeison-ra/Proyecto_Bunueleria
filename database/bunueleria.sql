@@ -42,6 +42,16 @@ CREATE TABLE IF NOT EXISTS movimiento_inventario (
         FOREIGN KEY (id_producto) REFERENCES producto(id_producto)
 );
 
+-- Usuario del sistema: reemplaza la tabla "persona" del proyecto del profesor.
+-- Esta tabla existe exclusivamente para soportar autenticación en Buñuelería.
+CREATE TABLE IF NOT EXISTS usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVO'
+);
+
 INSERT INTO categoria (nombre, descripcion, estado)
 SELECT 'Panadería', 'Productos de panadería y fritos', 'ACTIVO'
 WHERE NOT EXISTS (SELECT 1 FROM categoria WHERE nombre = 'Panadería');
