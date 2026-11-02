@@ -1,6 +1,6 @@
 package edu.itm.ProyectoBunueleria.repositories;
 
-import edu.itm.ProyectoBunueleria.identities.Producto;
+import edu.itm.ProyectoBunueleria.jpaEntities.Producto;
 import java.util.List;
 
 public interface ProductosRepositoryInterface {

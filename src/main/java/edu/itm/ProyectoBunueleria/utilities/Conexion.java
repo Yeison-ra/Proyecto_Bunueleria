@@ -28,7 +28,7 @@ public class Conexion {
         try {
             con = DriverManager.getConnection(URL, USUARIO, CLAVE);
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, "No fue posible conectar con MySQL", ex);
+            throw new IllegalStateException("No fue posible conectar con MySQL", ex);
         }
         return con;
     }

@@ -4,25 +4,71 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
   ],
   "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Iniciar sesión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set(\"token\", pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login?email=admin%40bunueleria.local&password=Bunueleria123%21"
+          }
+        }
+      ]
+    },
     {
       "name": "Productos",
       "item": [
         {
           "name": "Listar productos",
-          "request": { "method": "GET", "url": "{{baseUrl}}/productos/listar" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/productos/listar"
+          }
         },
         {
           "name": "Consultar producto 1",
-          "request": { "method": "GET", "url": "{{baseUrl}}/productos/consultar/1" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/productos/consultar/1"
+          }
         },
         {
           "name": "Crear producto",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nombre\": \"Empanada\",\n  \"descripcion\": \"Empanada de carne\",\n  \"idCategoria\": 1,\n  \"estado\": \"ACTIVO\",\n  \"costo\": 1500,\n  \"precioVenta\": 3000,\n  \"stockMinimo\": 10\n}"
@@ -34,7 +80,12 @@
           "name": "Actualizar producto",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"idProducto\": 1,\n  \"nombre\": \"Buñuelo grande\",\n  \"descripcion\": \"Buñuelo tradicional tamaño grande\",\n  \"idCategoria\": 1,\n  \"estado\": \"ACTIVO\",\n  \"costo\": 1400,\n  \"precioVenta\": 2800,\n  \"stockMinimo\": 12\n}"
@@ -44,7 +95,10 @@
         },
         {
           "name": "Desactivar producto",
-          "request": { "method": "PATCH", "url": "{{baseUrl}}/productos/desactivar/1" }
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/productos/desactivar/1"
+          }
         }
       ]
     },
@@ -53,13 +107,21 @@
       "item": [
         {
           "name": "Consultar inventario producto 1",
-          "request": { "method": "GET", "url": "{{baseUrl}}/inventario/producto/1" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/inventario/producto/1"
+          }
         },
         {
           "name": "Registrar entrada",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"idProducto\": 1,\n  \"tipoMovimiento\": \"ENTRADA\",\n  \"motivo\": \"Compra a proveedor\",\n  \"cantidad\": 50,\n  \"referencia\": \"COMPRA-001\"\n}"
@@ -71,7 +133,12 @@
           "name": "Registrar salida",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"idProducto\": 1,\n  \"tipoMovimiento\": \"SALIDA\",\n  \"motivo\": \"Ajuste de inventario\",\n  \"cantidad\": 5,\n  \"referencia\": \"AJUSTE-001\"\n}"
@@ -81,5 +148,15 @@
         }
       ]
     }
-  ]
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  }
 }

@@ -1,6 +1,10 @@
 package edu.itm.ProyectoBunueleria.jpaEntities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +35,11 @@ public class MovimientoInventario {
 
     @Column(name = "id_producto", nullable = false)
     private Integer idProducto;
+
+    @JsonIgnore @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto", insertable = false, updatable = false)
+    private Producto producto;
 
     @Column(nullable = false)
     private LocalDateTime fecha;

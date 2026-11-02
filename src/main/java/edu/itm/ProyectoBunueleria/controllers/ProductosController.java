@@ -105,10 +105,12 @@ public class ProductosController implements ProductosApi{
 
     private boolean productoValido(Producto producto) {
         return !ObjectUtils.isEmpty(producto)
-                && !ObjectUtils.isEmpty(producto.getNombre())
+                && producto.getNombre() != null && !producto.getNombre().isBlank()
                 && producto.getIdCategoria() != null
                 && producto.getCosto() != null
                 && producto.getPrecioVenta() != null
-                && producto.getStockMinimo() != null;
+                && producto.getStockMinimo() != null
+                && producto.getIdCategoria() > 0
+                && producto.getCosto() >= 0 && producto.getPrecioVenta() >= 0 && producto.getStockMinimo() >= 0;
     }
 }

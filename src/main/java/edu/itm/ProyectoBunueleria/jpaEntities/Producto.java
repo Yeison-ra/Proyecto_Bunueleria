@@ -1,6 +1,13 @@
 package edu.itm.ProyectoBunueleria.jpaEntities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "producto")
@@ -32,6 +41,17 @@ public class Producto {
 
     @Column(name = "id_categoria", nullable = false)
     private Integer idCategoria;
+
+    @JsonIgnore @ToString.Exclude @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categoria", insertable = false, updatable = false)
+    private Categoria categoria;
+
+    @JsonIgnore @ToString.Exclude @EqualsAndHashCode.Exclude @OneToOne(mappedBy = "producto", fetch = FetchType.LAZY)
+    private Inventario inventario;
+
+    @JsonIgnore @ToString.Exclude @EqualsAndHashCode.Exclude @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
+    private List<MovimientoInventario> movimientos;
 
     @Column(nullable = false, length = 20)
     private String estado;

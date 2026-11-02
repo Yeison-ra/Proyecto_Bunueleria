@@ -43,8 +43,7 @@ public class UsuariosRepository implements UsuariosRepositoryInterface {
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            return null;
+            throw new IllegalStateException("No fue posible consultar el usuario", exception);
         }
     }
 }

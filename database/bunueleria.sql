@@ -65,3 +65,8 @@ SELECT 'Buñuelo', 'Buñuelo tradicional',
        (SELECT id_categoria FROM categoria WHERE nombre = 'Panadería' LIMIT 1),
        'ACTIVO', 1200, 2500, 10
 WHERE NOT EXISTS (SELECT 1 FROM producto WHERE nombre = 'Buñuelo');
+
+-- Usuario solo para demostración local; reemplazar las credenciales en otros entornos.
+INSERT INTO usuario (nombre, email, password, estado)
+SELECT 'Administrador', 'admin@bunueleria.local', '$2b$12$LLfog/om7k/r9f5MnbKuE.Mce4rgFyIJ8jRrS6fCHo1iVSgSDIfw2', 'ACTIVO'
+WHERE NOT EXISTS (SELECT 1 FROM usuario WHERE email = 'admin@bunueleria.local');
